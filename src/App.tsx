@@ -259,17 +259,24 @@ export default function App() {
         <header className="mb-16">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
             <div className="flex flex-col gap-6">
-              <div className="h-20 w-48 overflow-hidden self-start">
+              <div className="flex items-center gap-4">
                 <img 
-                  src="/src/sit-logo.png" 
+                  src="/logo.webp" 
                   alt="SIT Logo" 
-                  className="h-[200%] w-[200%] max-w-none object-cover"
-                  style={{ transform: 'translate(-50.5%, -1.5%)' }} 
+                  className="h-16 w-auto object-contain"
                 />
+                <div className="flex flex-col">
+                  <span className="text-2xl font-bold text-white tracking-tighter uppercase leading-none">
+                    Shaggar Institute <br /> of Technology
+                  </span>
+                  <span className="text-[9px] text-[#F15A24] font-black uppercase tracking-[0.2em] mt-1.5">
+                    Excellence in Science and Technology
+                  </span>
+                </div>
               </div>
               <div>
                 <p className="font-medium text-xs uppercase tracking-[0.2em] text-[#8AC4C7] mb-2">
-                  Shaggar Institute of Technology · Group 26 · Physics 2026
+                  Group 26 · Physics 2026
                 </p>
                 <h1 className="text-5xl font-bold text-white mb-2 tracking-tight">
                   Rainbow Simulation Hub
