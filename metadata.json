@@ -1,0 +1,6 @@
+{
+  "name": "Rainbow Simulation Hub",
+  "description": "A centralized hub for 6 physics simulations about rainbows, dispersion, and atmospheric optics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
