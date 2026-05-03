@@ -201,11 +201,11 @@ const SIMULATIONS: Simulation[] = [
     color: "#a855f7", // Violet
     difficulty: "Hard",
     time: "~60 min",
-    platform: "Python 3 — local or Google Colab",
+    platform: "Interactive Chart — Browser",
     section: "VII.F + Appendix A",
     figures: ["Fig 17A", "Fig 17B"],
     ppt: "Slide 3 (Our Simulation box)",
-    url: "https://colab.research.google.com",
+    url: "/simulation6.html",
     description: "Original team code for Cauchy curves and analysis.",
     whatItDoes: "Original work built by the team. Demonstrates CS skills and physics knowledge. Output 1: Cauchy Dispersion Curve (n vs λ) with experimental data points. Output 2: Rainbow Angle vs Wavelength powered by Descartes' geometric deviation formula.",
     steps: [
@@ -424,20 +424,7 @@ export default function App() {
                 )}
 
                 {/* Screenshots */}
-                <section>
-                  <h4 className="text-[10px] font-bold text-[#8AC4C7] uppercase tracking-[0.2em] mb-8">Visualization Deliverables</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {selectedSim.screenshots.map((shot, idx) => (
-                      <div key={idx} className="bg-dark/30 p-8 border border-white/5 hover:border-white/10 transition-colors">
-                        <span className="text-[10px] uppercase font-black text-white tracking-widest bg-[#F15A24] px-2 py-0.5 mb-4 inline-block">{shot.fig}</span>
-                        <p className="text-sm text-gray-400 mb-6 leading-relaxed">{shot.caption}</p>
-                        <div className="pt-4 border-t border-white/5 text-[10px] font-bold uppercase tracking-widest text-[#8AC4C7]">
-                          Loc: {shot.placement}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
+
 
                 {/* Cross-reference */}
                 {selectedSim.crossRef !== "N/A" && (
@@ -457,7 +444,7 @@ export default function App() {
                     rel="noreferrer"
                     className="flex items-center justify-center w-full py-6 text-center text-sm bg-[#F15A24] text-white hover:bg-[#F15A24]/90 transition-all uppercase font-bold tracking-[0.3em] shadow-[0_10px_40px_rgba(241,90,36,0.2)]"
                   >
-                    {selectedSim.id === "sim6" ? "Cloud Integration: Google Colab" : "Initialize Remote Simulation"}
+                    {selectedSim.id === "sim6" ? "Initialize Interactive Simulation" : "Initialize Remote Simulation"}
                   </a>
                 </div>
               </div>

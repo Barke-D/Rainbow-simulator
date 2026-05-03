@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulation 6 — Cauchy Dispersion & Rainbow Angle</title>
+  <style>
+    body {
+      background-color: #0e0f14;
+      color: #ffffff;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 2rem;
+      line-height: 1.5;
+    }
+    h1, h2, h3, label, table th {
+      font-family: monospace;
+    }
+    h1 {
+      margin-top: 0;
+      margin-bottom: 0.2rem;
+    }
+    p.subheading {
+      color: #a0a0a0;
+      margin-top: 0;
+      margin-bottom: 2rem;
+    }
+    .panel {
+      border: 1px solid #333;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      background-color: #14151a;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 1rem;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 0.5rem;
+      text-align: left;
+    }
+    th {
+      background-color: #222;
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+    input[type="number"], input[type="text"] {
+      background-color: #000;
+      border: 1px solid #444;
+      color: #fff;
+      padding: 0.3rem 0.5rem;
+      width: 100px;
+      font-family: monospace;
+    }
+    input[readonly] {
+      background-color: #222;
+      border-color: #222;
+      color: #aaa;
+    }
+    .input-row {
+      margin-bottom: 1rem;
+    }
+    .input-row label {
+      display: inline-block;
+      width: 300px;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+    .btn {
+      background-color: #2b5797;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-family: monospace;
+      cursor: pointer;
+      display: block;
+      margin-top: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .btn:hover {
+      background-color: #3b6ea5;
+    }
+    .muted {
+      color: #777;
+      font-size: 0.85rem;
+    }
+    .chart-container {
+      position: relative;
+      height: 400px;
+      width: 100%;
+      margin-top: 1rem;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="icon" href="data:,">
+</head>
+<body>
+
+  <h1>Simulation 6 — Cauchy Dispersion & Rainbow Angle</h1>
+  <p class="subheading">Enter your experimental data below and click Generate</p>
+
+  <div class="panel">
+    <h3>Chart 1: Cauchy Dispersion Curve — Water & Glass</h3>
+    <table id="cauchy-table">
+      <thead>
+        <tr>
+          <th>Wavelength λ (nm)</th>
+          <th>n_water</th>
+          <th>n_glass</th>
+          <th>± error</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="number" value="400" readonly></td>
+          <td><input type="number" step="0.001" value="1.343" class="nw"></td>
+          <td><input type="number" step="0.001" value="1.534" class="ng"></td>
+          <td><input type="number" step="0.001" value="0.002" class="err"></td>
+        </tr>
+        <tr>
+          <td><input type="number" value="450" readonly></td>
+          <td><input type="number" step="0.001" value="1.340" class="nw"></td>
+          <td><input type="number" step="0.001" value="1.527" class="ng"></td>
+          <td><input type="number" step="0.001" value="0.002" class="err"></td>
+        </tr>
+        <tr>
+          <td><input type="number" value="550" readonly></td>
+          <td><input type="number" step="0.001" value="1.334" class="nw"></td>
+          <td><input type="number" step="0.001" value="1.519" class="ng"></td>
+          <td><input type="number" step="0.001" value="0.001" class="err"></td>
+        </tr>
+        <tr>
+          <td><input type="number" value="589" readonly></td>
+          <td><input type="number" step="0.001" value="1.333" class="nw"></td>
+          <td><input type="number" step="0.001" value="1.517" class="ng"></td>
+          <td><input type="number" step="0.001" value="0.001" class="err"></td>
+        </tr>
+        <tr>
+          <td><input type="number" value="620" readonly></td>
+          <td><input type="number" step="0.001" value="1.332" class="nw"></td>
+          <td><input type="number" step="0.001" value="1.514" class="ng"></td>
+          <td><input type="number" step="0.001" value="0.001" class="err"></td>
+        </tr>
+        <tr>
+          <td><input type="number" value="700" readonly></td>
+          <td><input type="number" step="0.001" value="1.331" class="nw"></td>
+          <td><input type="number" step="0.001" value="1.510" class="ng"></td>
+          <td><input type="number" step="0.001" value="0.001" class="err"></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="chart-container">
+      <canvas id="chart1"></canvas>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Chart 2: Primary Rainbow Angle vs. Wavelength</h3>
+    <div class="input-row">
+      <label>Your measured red angle (degrees):</label>
+      <input type="text" id="measured-red" placeholder="e.g. 42.1">
+    </div>
+    <div class="input-row">
+      <label>Your measured violet angle (degrees):</label>
+      <input type="text" id="measured-violet" placeholder="e.g. 40.9">
+    </div>
+    <div class="chart-container">
+      <canvas id="chart2"></canvas>
+    </div>
+  </div>
+
+  <button class="btn" onclick="generateCharts()">Generate Charts</button>
+  <p class="muted">Replace pre-filled values with your actual measurements from Experiments A, B, and C before generating.</p>
+
+  <script>
+    let chart1Instance = null;
+    let chart2Instance = null;
+
+    const errorBarPlugin = {
+      id: 'errorBars',
+      afterDatasetsDraw: (chart, args, options) => {
+        const {ctx} = chart;
+        chart.data.datasets.forEach((dataset, i) => {
+          if (dataset.hasErrorBars) {
+            const meta = chart.getDatasetMeta(i);
+            if (meta.hidden) return;
+            meta.data.forEach((element, index) => {
+              const point = dataset.data[index];
+              if(point.error) {
+                const errorVal = point.error;
+                const yTop = chart.scales.y.getPixelForValue(point.y + errorVal);
+                const yBottom = chart.scales.y.getPixelForValue(point.y - errorVal);
+                const x = element.x;
+                
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(x, yTop);
+                ctx.lineTo(x, yBottom);
+                ctx.moveTo(x - 4, yTop);
+                ctx.lineTo(x + 4, yTop);
+                ctx.moveTo(x - 4, yBottom);
+                ctx.lineTo(x + 4, yBottom);
+                ctx.strokeStyle = dataset.pointBorderColor[index] || dataset.borderColor;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                ctx.restore();
+              }
+            });
+          }
+        });
+      }
+    };
+
+    function getColorForWavelength(wl) {
+      if(wl === 400) return 'violet';
+      if(wl === 450) return 'blue';
+      if(wl === 550) return 'green';
+      if(wl === 589) return 'yellow';
+      if(wl === 620) return 'orange';
+      if(wl === 700) return 'red';
+      return '#fff';
+    }
+
+    function calculateCauchy(A, B, wl_nm) {
+      const wl_um = wl_nm / 1000;
+      return A + (B / (wl_um * wl_um));
+    }
+
+    function getMinDeviationRainbowAngle(n) {
+      let minD = Infinity;
+      const steps = 1000;
+      for(let i=0; i<=steps; i++) {
+        const theta_i = (i / steps) * (Math.PI / 2);
+        const sin_theta_r = Math.sin(theta_i) / n;
+        if(sin_theta_r > 1) continue;
+        const theta_r = Math.asin(sin_theta_r);
+        const D = Math.PI + 2*theta_i - 4*theta_r;
+        if(D < minD) {
+          minD = D;
+        }
+      }
+      return 180 - (minD * 180 / Math.PI);
+    }
+
+    function generateCharts() {
+      if (chart1Instance) chart1Instance.destroy();
+      if (chart2Instance) chart2Instance.destroy();
+
+      // Read Chart 1 Inputs
+      const tbody = document.querySelector('#cauchy-table tbody');
+      const rows = tbody.querySelectorAll('tr');
+      const userDataWater = [];
+      const userDataGlass = [];
+      const pointColors = [];
+      
+      rows.forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        const wl = parseFloat(inputs[0].value);
+        const nw = parseFloat(inputs[1].value);
+        const ng = parseFloat(inputs[2].value);
+        const err = parseFloat(inputs[3].value);
+        
+        userDataWater.push({ x: wl, y: nw, error: err });
+        userDataGlass.push({ x: wl, y: ng, error: err });
+        pointColors.push(getColorForWavelength(wl));
+      });
+
+      // Generate Theory Curves
+      const theoryWl = [];
+      const theoryWater = [];
+      const theoryGlass = [];
+      const theoryRainbow = [];
+      
+      for(let wl = 380; wl <= 720; wl++) {
+        theoryWl.push(wl);
+        const n_w = calculateCauchy(1.3240, 0.00311, wl);
+        const n_g = calculateCauchy(1.4580, 0.00354, wl);
+        theoryWater.push({x: wl, y: n_w});
+        theoryGlass.push({x: wl, y: n_g});
+        
+        const rainbowAngle = getMinDeviationRainbowAngle(n_w);
+        theoryRainbow.push({x: wl, y: rainbowAngle});
+      }
+
+      // Chart 1
+      const ctx1 = document.getElementById('chart1').getContext('2d');
+      chart1Instance = new Chart(ctx1, {
+        type: 'line',
+        plugins: [errorBarPlugin],
+        data: {
+          datasets: [
+            {
+              label: 'Theory Water',
+              data: theoryWater,
+              borderColor: 'blue',
+              borderWidth: 2,
+              pointRadius: 0,
+              fill: false
+            },
+            {
+              label: 'Theory Glass',
+              data: theoryGlass,
+              borderColor: 'red',
+              borderWidth: 2,
+              pointRadius: 0,
+              fill: false
+            },
+            {
+              label: 'User Water',
+              data: userDataWater,
+              type: 'scatter',
+              backgroundColor: pointColors,
+              borderColor: pointColors,
+              pointBorderColor: pointColors,
+              pointRadius: 5,
+              hasErrorBars: true
+            },
+            {
+              label: 'User Glass',
+              data: userDataGlass,
+              type: 'scatter',
+              backgroundColor: pointColors,
+              borderColor: pointColors,
+              pointBorderColor: pointColors,
+              pointRadius: 5,
+              hasErrorBars: true
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          color: '#ccc',
+          scales: {
+            x: {
+              type: 'linear',
+              min: 380,
+              max: 720,
+              grid: { color: '#333' },
+              title: { display: true, text: 'Wavelength λ (nm)', color: '#fff', font: {family: 'monospace'} }
+            },
+            y: {
+              min: 1.28,
+              max: 1.56,
+              grid: { color: '#333' },
+              title: { display: true, text: 'Refractive index n', color: '#fff', font: {family: 'monospace'} }
+            }
+          },
+          plugins: {
+            legend: { labels: { color: '#ccc', font: {family: 'monospace'} } }
+          }
+        }
+      });
+
+      // Chart 2 inputs
+      const mRedStr = document.getElementById('measured-red').value;
+      const mVioletStr = document.getElementById('measured-violet').value;
+      const mRed = parseFloat(mRedStr);
+      const mViolet = parseFloat(mVioletStr);
+
+      // Create gradient for theory line
+      const ctx2 = document.getElementById('chart2').getContext('2d');
+      // Estimate pixel area for gradient (roughly)
+      const gradient = ctx2.createLinearGradient(0, 0, document.getElementById('chart2').width, 0);
+      gradient.addColorStop(0, 'violet');
+      gradient.addColorStop(0.2, 'blue');
+      gradient.addColorStop(0.4, 'green');
+      gradient.addColorStop(0.6, 'yellow');
+      gradient.addColorStop(0.8, 'orange');
+      gradient.addColorStop(1, 'red');
+
+      const chart2Datasets = [
+        {
+          label: 'Theory Rainbow Angle',
+          data: theoryRainbow,
+          borderColor: gradient,
+          borderWidth: 2,
+          pointRadius: 0,
+          fill: false
+        },
+        {
+          label: 'Red theoretical (42.5°)',
+          data: [{x: 380, y: 42.5}, {x: 720, y: 42.5}],
+          borderColor: 'red',
+          borderDash: [5, 5],
+          borderWidth: 1,
+          pointRadius: 0,
+          fill: false
+        },
+        {
+          label: 'Violet theoretical (40.6°)',
+          data: [{x: 380, y: 40.6}, {x: 720, y: 40.6}],
+          borderColor: 'violet',
+          borderDash: [5, 5],
+          borderWidth: 1,
+          pointRadius: 0,
+          fill: false
+        }
+      ];
+
+      if (!isNaN(mRed)) {
+        chart2Datasets.push({
+          label: 'Red measured: ' + mRed + '°',
+          data: [{x: 380, y: mRed}, {x: 720, y: mRed}],
+          borderColor: 'red',
+          borderWidth: 1.5,
+          pointRadius: 0,
+          fill: false
+        });
+      }
+      if (!isNaN(mViolet)) {
+        chart2Datasets.push({
+          label: 'Violet measured: ' + mViolet + '°',
+          data: [{x: 380, y: mViolet}, {x: 720, y: mViolet}],
+          borderColor: 'violet',
+          borderWidth: 1.5,
+          pointRadius: 0,
+          fill: false
+        });
+      }
+
+      chart2Instance = new Chart(ctx2, {
+        type: 'line',
+        data: { datasets: chart2Datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          color: '#ccc',
+          scales: {
+            x: {
+              type: 'linear',
+              min: 380,
+              max: 720,
+              grid: { color: '#333' },
+              title: { display: true, text: 'Wavelength λ (nm)', color: '#fff', font: {family: 'monospace'} }
+            },
+            y: {
+              min: 39,
+              max: 44,
+              grid: { color: '#333' },
+              title: { display: true, text: 'Rainbow angle (degrees)', color: '#fff', font: {family: 'monospace'} }
+            }
+          },
+          plugins: {
+            legend: { labels: { color: '#ccc', font: {family: 'monospace'} } }
+          }
+        }
+      });
+    }
+
+    // Initial render - REMOVED per checklist (only render on click)
+    // window.onload = generateCharts;
+  </script>
+</body>
+</html>
